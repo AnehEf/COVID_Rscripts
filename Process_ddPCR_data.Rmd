@@ -1,0 +1,64 @@
+---
+title: "Process ddPCR data"
+author: "Adelaide Roguet"
+date: "3/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-packages, include=FALSE}
+rm(list=ls(all=FALSE))# But the best is to uncheck all the boxes "R Session" and "Workspace" in the preferences of RStudio and RESTART RStudio all the time you run this script!
+library(twoddpcr) #install: https://www.bioconductor.org/packages/release/bioc/html/twoddpcr.html
+library(ggplot2)
+library(data.table)
+library(dplyr)
+library(stringr)
+library(ezknitr)
+```
+
+
+# Preparation
+### Set the working directory
+OneDrive desktop has to be install on your computer. \
+Once install, you will have to synchronize the SARS-CoV-2 folder to your files, to do that, you just have to create a shortcut of the SARS-CoV-2 folder. On your favorite browser, just right click on SARS-CoV-2 folder and click on "Add shortcut".  \
+You are good to go :-)
+```{r}
+working_directory="~/OneDrive - UWM/SARS-CoV-2/DATA/ddPCR data/"
+```
+
+### Set the run-ID
+The run-ID is the name of the directory containing the amplification/cluster .csv files
+It is important that folder start with: 
+YEAR-MONTH-DAY space TARGET, such as 2021-1-24 for a N1N2 run performed on January 24, 2021
+```{r}
+run_ID = "2-25 PMMOV copy"
+```
+
+### Set the sample info
+.csv name (in the folder)
+```{r}
+samples.info = "2-25 PMMoV.csv" 
+```
+
+
+
+# Process the ddPCR data 
+
+### Import the functions
+```{r echo=FALSE, error=FALSE, message=FALSE}
+knitr::opts_knit$set(root.dir = paste0(working_directory, run_ID, "/"))
+file.copy("~/OneDrive - UWM/SARS-CoV-2/DATA/ddPCR data/function_ddPCR_v4.R", ".", overwrite = TRUE)
+source("function_ddPCR_v4.R")
+```
+
+
+## Run analysis
+```{r dplyr, stringr, data.table}
+Analyse_ddPCR_results()
+```
+
+
+
